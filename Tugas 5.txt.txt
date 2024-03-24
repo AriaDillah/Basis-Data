@@ -1,0 +1,94 @@
+
+Setting environment for using XAMPP for Windows.
+Dragon@DESKTOP-SM8HSTH c:\xampp
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 11
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> USE dbkampus;
+Database changed
+MariaDB [dbkampus]> CREATE TABLE jurusan(
+    ->  id int primary key auto_increment not null,
+    -> nama varchar (30) not null unique);
+Query OK, 0 rows affected (0.049 sec)
+
+MariaDB [dbkampus]> DESC jurusan;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.021 sec)
+
+MariaDB [dbkampus]> CREATE TABLE mahasiswa(
+    ->  id int primary key auto_increment not null,
+    -> nim int not null unique,
+    ->  nama varchar(30) not null,
+    -> alamat varchar (50) not null,
+    -> idjurusan int not null references jurusan(id),
+    -> foto varchar(50) null);
+Query OK, 0 rows affected (0.052 sec)
+
+MariaDB [dbkampus]> DESC mahasiswa;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nim       | int(11)     | NO   | UNI | NULL    |                |
+| nama      | varchar(30) | NO   |     | NULL    |                |
+| alamat    | varchar(50) | NO   |     | NULL    |                |
+| idjurusan | int(11)     | NO   |     | NULL    |                |
+| foto      | varchar(50) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+6 rows in set (0.025 sec)
+
+MariaDB [dbkampus]>  INSERT INTO jurusan (nama) VALUES
+    ->  ('Teknik Informatika'),('Sistem Informasi'),('Bisnis Digital'),('Sastra Inggris'),('Akuntansi')
+    ->  ('Teknik Informatika'),('Sistem Informasi'),('Bisnis Digital'),('Sastra Inggris'),('Akuntansi');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '('Teknik Informatika'),('Sistem Informasi'),('Bisnis Digital'),('Sastra Inggr...' at line 3
+MariaDB [dbkampus]>  INSERT INTO jurusan (nama) VALUES
+    ->  ('Teknik Informatika'),('Sistem Informasi'),('Bisnis Digital'),('Sastra Inggris'),('Akuntansi');
+Query OK, 5 rows affected (0.080 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [dbkampus]> SELECT * FROM jurusan;
++----+--------------------+
+| id | nama               |
++----+--------------------+
+|  5 | Akuntansi          |
+|  3 | Bisnis Digital     |
+|  4 | Sastra Inggris     |
+|  2 | Sistem Informasi   |
+|  1 | Teknik Informatika |
++----+--------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbkampus]> INSERT INTO mahasiswa (nim,nama,alamat,idjurusan,foto) VALUES
+    -> (0110223076,'Aria Dillah','Bogor',1,'AD.jpeg'),
+    -> (0110223072,'Haekal Sulton Alfatoni','Depok',2,'HSA.jpeg'),
+    -> (0110223071,'Mahdi Saputra','Bekasi',3,'MS.jpeg'),
+    -> (0110223074,'Faturahman Alfarisi','Jakarta',4,'FA.jpeg'),
+    -> (0110223073,'Zaki Muhamad Hafiz','Tangerang',5,'ZMH.jpeg');
+Query OK, 5 rows affected (0.012 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [dbkampus]> SELECT * FROM mahasiswa;
++----+-----------+------------------------+-----------+-----------+----------+
+| id | nim       | nama                   | alamat    | idjurusan | foto     |
++----+-----------+------------------------+-----------+-----------+----------+
+|  1 | 110223076 | Aria Dillah            | Bogor     |         1 | AD.jpeg  |
+|  2 | 110223072 | Haekal Sulton Alfatoni | Depok     |         2 | HSA.jpeg |
+|  3 | 110223071 | Mahdi Saputra          | Bekasi    |         3 | MS.jpeg  |
+|  4 | 110223074 | Faturahman Alfarisi    | Jakarta   |         4 | FA.jpeg  |
+|  5 | 110223073 | Zaki Muhamad Hafiz     | Tangerang |         5 | ZMH.jpeg |
++----+-----------+------------------------+-----------+-----------+----------+
+5 rows in set (0.000 sec)
+
+MariaDB [dbkampus]>
